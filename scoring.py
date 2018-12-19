@@ -55,13 +55,21 @@ modedistribution=data1.groupby('yearID')["AVG"].agg(lambda x:x.value_counts().in
 modedistribution = modedistribution.reset_index()
 modedistribution = modedistribution.rename(columns={'AVG': 'mode'})
 
+#MEAN PLOT
 #plt.plot( 'yearID', 'mean', data=meandistribution, marker='o', markerfacecolor='blue', markersize=12, color='skyblue', linewidth=4)
-plt.plot( 'yearID', 'mean', data=meandistribution,color='red')
+plt.scatter( 'yearID', 'mean', data=meandistribution,color='red')
 #plt.plot( 'yearID', 'median', data=mediandistribution,color='blue')
 #plt.plot( 'yearID', 'std', data=stddistribution,color='blue')
-plt.plot( 'yearID', 'max', data=maxs,color='orange')
-plt.plot( 'yearID', 'min', data=mins,color='yellow')
+plt.scatter( 'yearID', 'max', data=maxs,color='orange')
+plt.scatter( 'yearID', 'min', data=mins,color='yellow')
 #plt.plot( 'yearID', 'mode', data=modedistribution,color='brown')
+plt.xlabel ('YEAR')
+plt.ylabel ('AVG')
+plt.title ('AVG BY YEAR')
+plt.legend()
+
+#STD DEV PLOT
+plt.scatter( 'yearID', 'std', data=stddistribution,color='blue')
 plt.xlabel ('YEAR')
 plt.ylabel ('AVG')
 plt.title ('AVG BY YEAR')
@@ -70,7 +78,7 @@ plt.legend()
 
 
 
-
+#HIGHEST BATTING PERCENTAGE PER YEAR
 maxidx=data1.loc[data1.groupby("yearID")["AVG"].idxmax()]
 master=pd.read_csv("Master.csv")
 
@@ -87,7 +95,7 @@ print(result.to_string())
 
 
 
-
+#EXPERIENCE VS PERFORMANCE
 data1=data1.sort_index(by=['playerID', 'yearID'])
 data1["season"]=data1.groupby('playerID').cumcount()+1
 pivot1=pd.pivot_table(data1,index='playerID', columns='season', values='AVG')
@@ -95,8 +103,8 @@ pivotT=pivot1.T
 res=pd.DataFrame()
 res["mean"]=pivotT.mean(axis=1)
 res['season'] = pivotT.index
-plt.plot( 'season', 'mean', data=res,color='red')
+plt.scatter( 'season', 'mean', data=res,color='red')
 plt.xlabel ('SEASON')
 plt.ylabel ('AVG')
 plt.title ('AVG BY SEASON')
-
+plt.legend()
